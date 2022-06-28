@@ -5,7 +5,9 @@ import img from "../../assets/img/m.jpg"
 import mAlpha from "../../assets/img/m-alpha.jpg"
 import mAO from "../../assets/img/m-AO.jpg"
 import mDis from "../../assets/img/m-dis.jpg"
-//目标：凹凸贴图（黑-白） 需要设置构造器后面的几个参数
+import mRoughness from "../../assets/img/m-roughness.jpg"
+
+//目标：设置粗糙度与粗糙度贴图
 
 // 1.创建场景
 const scnen = new THREE.Scene()
@@ -21,7 +23,7 @@ scnen.add(camera)
 
 // 增加环境光
 const light = new THREE.AmbientLight(0xffffff, 0.6); // soft white light
-scnen.add( light );
+scnen.add(light);
 // 平行光
 const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
 directionalLight.position.set(10, 10, 10)
@@ -35,13 +37,17 @@ const textureLoader = new THREE.TextureLoader()
 const text = textureLoader.load(img)
 // 凹凸贴图
 const textdis = textureLoader.load(mDis)
+// 粗糙度贴图
+const textroughness = textureLoader.load(mRoughness)
+
+
 
 
 
 // 创建集合体
 // 立方体  .side : Integer定义将要渲染哪一面 - 正面，背面或两者
 const geometry = new THREE.BoxBufferGeometry(1, 2.3, 1);
-const material = new THREE.MeshStandardMaterial({ color: "#ffff00",side: THREE.DoubleSide, map: text, displacementMap: textdis, displacementScale: 0.05 });
+const material = new THREE.MeshStandardMaterial({ color: "#ffff00", side: THREE.DoubleSide, map: text, displacementMap: textdis, displacementScale: 0.05, roughness: 1.0, roughnessMap: textroughness });
 const cube = new THREE.Mesh(geometry, material);
 scnen.add(cube);
 
