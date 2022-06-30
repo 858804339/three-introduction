@@ -8,7 +8,7 @@ import mDis from "../../assets/img/m-dis.jpg"
 import mRoughness from "../../assets/img/m-roughness.jpg"
 import mMeta from "../../assets/img/m-meta.jpg"
 
-//目标：设置粗糙度与粗糙度贴图
+//目标：加载进度
 
 // 1.创建场景
 const scnen = new THREE.Scene()
@@ -31,10 +31,26 @@ directionalLight.position.set(10, 10, 10)
 scnen.add(directionalLight);
 
 
+const manager = new THREE.LoadingManager();
+
+manager.onLoad = () => {
+    console.log('全部加载完成');
+}
+
+manager.onProgress = (url, num, total) => {
+    console.log('图片:' + url, '当前：' + num + '张', '总数：' + total + '张');
+    console.log('当前进度:' + ((num / total) * 100).toFixed(2) + "%");
+}
+
+manager.onError = (url) => {
+    console.log('There was an error loading ' + url);
+};
+
+
 
 
 // 导入纹理
-const textureLoader = new THREE.TextureLoader()
+const textureLoader = new THREE.TextureLoader(manager)
 const text = textureLoader.load(img)
 // 凹凸贴图
 const textdis = textureLoader.load(mDis)
@@ -50,7 +66,7 @@ const textmeta = textureLoader.load(mMeta)
 // 创建集合体
 // 立方体  .side : Integer定义将要渲染哪一面 - 正面，背面或两者
 const geometry = new THREE.BoxBufferGeometry(1, 2.3, 1);
-const material = new THREE.MeshStandardMaterial({ color: "#ffff00", side: THREE.DoubleSide, map: text, displacementMap: textdis, displacementScale: 0.05, roughness: 1.0, roughnessMap: textroughness,metalness:1, metalnessMap: textmeta });
+const material = new THREE.MeshStandardMaterial({ color: "#ffff00", side: THREE.DoubleSide, map: text, displacementMap: textdis, displacementScale: 0.05, roughness: 1.0, roughnessMap: textroughness, metalness: 1, metalnessMap: textmeta });
 const cube = new THREE.Mesh(geometry, material);
 scnen.add(cube);
 

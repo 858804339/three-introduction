@@ -2,7 +2,7 @@ import * as THREE from 'three'
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls"
 
 import img from "../../assets/img/R-C.jpg"
-// 纹理设置 
+// 纹理设置  素材下载 ：poliigon
 
 // 1.创建场景
 const scnen = new THREE.Scene()
